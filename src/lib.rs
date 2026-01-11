@@ -155,11 +155,9 @@ pub enum Commands {
     },
 
     /// Query similarity using a literal text string (basic inference-to-vector)
-    #[command(
-        long_about = "Query cosine similarity using a literal text string\n\n\
+    #[command(long_about = "Query cosine similarity using a literal text string\n\n\
         This is a convenience wrapper that encodes the provided text as bytes into a VSA query vector\n\
-        and runs the same retrieval path as `query`."
-    )]
+        and runs the same retrieval path as `query`.")]
     QueryText {
         /// Engram file to query
         #[arg(short, long, default_value = "root.engram", value_name = "FILE")]
@@ -228,8 +226,7 @@ pub enum Commands {
 
     /// Mount an engram as a FUSE filesystem (requires --features fuse)
     #[cfg(feature = "fuse")]
-    #[command(
-        long_about = "Mount an engram as a FUSE filesystem\n\n\
+    #[command(long_about = "Mount an engram as a FUSE filesystem\n\n\
         This command mounts an engram at the specified mountpoint, making all files\n\
         accessible through the standard filesystem interface. Files are decoded\n\
         on-demand from the holographic representation.\n\n\
@@ -241,8 +238,7 @@ pub enum Commands {
           fusermount -u /path/to/mountpoint\n\n\
         Example:\n\
           embeddenator mount -e project.engram -m project.json /mnt/engram\n\
-          embeddenator mount --engram backup.engram --mountpoint ~/mnt --allow-other"
-    )]
+          embeddenator mount --engram backup.engram --mountpoint ~/mnt --allow-other")]
     Mount {
         /// Engram file to mount
         #[arg(short, long, default_value = "root.engram", value_name = "FILE")]
@@ -270,8 +266,7 @@ pub enum Commands {
     },
 
     /// Incremental update operations (add/remove/modify files)
-    #[command(
-        long_about = "Perform incremental updates to an existing engram\n\n\
+    #[command(long_about = "Perform incremental updates to an existing engram\n\n\
         This command enables efficient updates to engrams without full re-ingestion.\n\
         Use subcommands to add, remove, or modify files, or to compact the engram.\n\n\
         Subcommands:\n\
@@ -283,8 +278,7 @@ pub enum Commands {
           embeddenator update add -e data.engram -m data.json -f new.txt\n\
           embeddenator update remove -e data.engram -m data.json -p old.txt\n\
           embeddenator update modify -e data.engram -m data.json -f changed.txt\n\
-          embeddenator update compact -e data.engram -m data.json"
-    )]
+          embeddenator update compact -e data.engram -m data.json")]
     #[command(subcommand)]
     Update(UpdateCommands),
 }
@@ -322,13 +316,11 @@ pub enum UpdateCommands {
     },
 
     /// Remove a file from the engram (mark as deleted)
-    #[command(
-        long_about = "Mark a file as deleted in the engram manifest\n\n\
+    #[command(long_about = "Mark a file as deleted in the engram manifest\n\n\
         This operation marks the file as deleted without modifying the root vector,\n\
         since VSA bundling has no clean inverse. Use 'compact' to truly remove chunks.\n\n\
         Example:\n\
-          embeddenator update remove -e data.engram -m data.json -p old_file.txt"
-    )]
+          embeddenator update remove -e data.engram -m data.json -p old_file.txt")]
     Remove {
         /// Engram file to update
         #[arg(short, long, default_value = "root.engram", value_name = "FILE")]
@@ -348,13 +340,11 @@ pub enum UpdateCommands {
     },
 
     /// Modify an existing file in the engram
-    #[command(
-        long_about = "Update an existing file's content in the engram\n\n\
+    #[command(long_about = "Update an existing file's content in the engram\n\n\
         This operation marks the old version as deleted and adds the new version.\n\
         Use 'compact' periodically to clean up old chunks.\n\n\
         Example:\n\
-          embeddenator update modify -e data.engram -m data.json -f updated.txt"
-    )]
+          embeddenator update modify -e data.engram -m data.json -f updated.txt")]
     Modify {
         /// Engram file to update
         #[arg(short, long, default_value = "root.engram", value_name = "FILE")]

@@ -14,7 +14,7 @@ pub fn path_to_forward_slash_string(path: &Path) -> String {
 }
 
 /// Generate a logical path for a file input
-/// 
+///
 /// If the path is relative, return it as-is with forward slashes.
 /// If the path is absolute and within cwd, return the relative portion.
 /// Otherwise, return just the filename.
