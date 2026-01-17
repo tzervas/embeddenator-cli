@@ -1,0 +1,31 @@
+# Gitleaks configuration for embeddenator
+# https://github.com/gitleaks/gitleaks
+
+title = "Embeddenator Gitleaks Config"
+
+[extend]
+# Use the default gitleaks config as a base
+useDefault = true
+
+[allowlist]
+description = "Global allowlist"
+paths = [
+    '''\.lock$''',
+    '''go\.sum$''',
+    '''package-lock\.json$''',
+    '''Cargo\.lock$''',
+]
+
+# Ignore test fixtures with fake credentials
+[[allowlist]]
+description = "Ignore test fixtures"
+paths = [
+    '''(test|tests|fixtures|testdata)/.*''',
+]
+
+# Allow example/placeholder values in documentation
+[[allowlist]]
+description = "Ignore example values in docs"
+paths = [
+    '''(README|CONTRIBUTING|docs/).*\.(md|rst|txt)$''',
+]
