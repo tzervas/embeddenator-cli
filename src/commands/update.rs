@@ -75,11 +75,7 @@ pub fn handle_update_modify(
     )
 }
 
-pub fn handle_update_compact(
-    _engram: PathBuf,
-    _manifest: PathBuf,
-    verbose: bool,
-) -> Result<()> {
+pub fn handle_update_compact(_engram: PathBuf, _manifest: PathBuf, verbose: bool) -> Result<()> {
     if verbose {
         println!(
             "Embeddenator v{} - Compact Engram",

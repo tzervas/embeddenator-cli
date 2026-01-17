@@ -1,10 +1,11 @@
 //! Bundle hierarchical artifacts command implementation
 
 use anyhow::Result;
-use embeddenator_fs::embrfs::{EmbrFS, save_hierarchical_manifest, save_sub_engrams_dir};
+use embeddenator_fs::embrfs::{save_hierarchical_manifest, save_sub_engrams_dir, EmbrFS};
 use embeddenator_vsa::ReversibleVSAConfig;
 use std::path::PathBuf;
 
+#[allow(clippy::too_many_arguments)]
 pub fn handle_bundle_hier(
     engram: PathBuf,
     manifest: PathBuf,

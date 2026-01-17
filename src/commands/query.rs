@@ -2,8 +2,8 @@
 
 use anyhow::Result;
 use embeddenator_fs::embrfs::{
-    DirectorySubEngramStore, EmbrFS, HierarchicalQueryBounds,
-    load_hierarchical_manifest, query_hierarchical_codebook_with_store,
+    load_hierarchical_manifest, query_hierarchical_codebook_with_store, DirectorySubEngramStore,
+    EmbrFS, HierarchicalQueryBounds,
 };
 use embeddenator_vsa::{ReversibleVSAConfig, SparseVec};
 use std::collections::HashMap;
@@ -116,9 +116,7 @@ pub fn handle_query(
         );
         for h in hier_hits {
             let key = (h.sub_engram_id, h.chunk_id);
-            let entry = merged_hier
-                .entry(key)
-                .or_insert((h.cosine, h.approx_score));
+            let entry = merged_hier.entry(key).or_insert((h.cosine, h.approx_score));
             if h.cosine > entry.0 {
                 *entry = (h.cosine, h.approx_score);
             }
@@ -145,7 +143,10 @@ pub fn handle_query(
     if !top_matches.is_empty() {
         println!("Top codebook matches:");
         for (id, cosine, approx) in top_matches {
-            println!("  chunk {}  cosine {:.4}  approx_dot {}", id, cosine, approx);
+            println!(
+                "  chunk {}  cosine {:.4}  approx_dot {}",
+                id, cosine, approx
+            );
         }
     } else if verbose {
         println!("Top codebook matches: (none)");
@@ -273,9 +274,7 @@ pub fn handle_query_text(
         );
         for h in hier_hits {
             let key = (h.sub_engram_id, h.chunk_id);
-            let entry = merged_hier
-                .entry(key)
-                .or_insert((h.cosine, h.approx_score));
+            let entry = merged_hier.entry(key).or_insert((h.cosine, h.approx_score));
             if h.cosine > entry.0 {
                 *entry = (h.cosine, h.approx_score);
             }
@@ -302,7 +301,10 @@ pub fn handle_query_text(
     if !top_matches.is_empty() {
         println!("Top codebook matches:");
         for (id, cosine, approx) in top_matches {
-            println!("  chunk {}  cosine {:.4}  approx_dot {}", id, cosine, approx);
+            println!(
+                "  chunk {}  cosine {:.4}  approx_dot {}",
+                id, cosine, approx
+            );
         }
     } else if verbose {
         println!("Top codebook matches: (none)");
