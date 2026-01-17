@@ -17,13 +17,15 @@ paths = [
 ]
 
 # Ignore test fixtures with fake credentials
-[[rules]]
-id = "test-fixture-allowlist"
+[[allowlist]]
 description = "Ignore test fixtures"
-path = '''(test|tests|fixtures|testdata)/.*'''
+paths = [
+    '''(test|tests|fixtures|testdata)/.*''',
+]
 
 # Allow example/placeholder values in documentation
-[[rules]]
-id = "docs-allowlist"
+[[allowlist]]
 description = "Ignore example values in docs"
-path = '''(README|CONTRIBUTING|docs/).*\.(md|rst|txt)$'''
+paths = [
+    '''(README|CONTRIBUTING|docs/).*\.(md|rst|txt)$''',
+]
