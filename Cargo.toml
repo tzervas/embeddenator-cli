@@ -22,7 +22,7 @@ path = "src/main.rs"
 # Component libraries (Phase 2A decomposition)
 embeddenator-vsa = "0.20.0-alpha.1"
 embeddenator-retrieval = "0.20.0-alpha.1"
-embeddenator-fs = "0.20.0-alpha.1"
+embeddenator-fs = "0.21.0"
 embeddenator-io = "0.20.0-alpha.1"
 
 # CLI and error handling
