@@ -7,6 +7,7 @@ description = "CLI interface for Embeddenator holographic computing substrate"
 license = "MIT"
 repository = "https://github.com/tzervas/embeddenator"
 homepage = "https://github.com/tzervas/embeddenator"
+documentation = "https://docs.rs/embeddenator-cli"
 keywords = ["vsa", "holographic", "cli", "engram", "vector-symbolic"]
 categories = ["command-line-utilities"]
 
@@ -39,4 +40,4 @@ walkdir = ">=2.5, <3.0"
 
 [features]
 default = []
-fuse = ["embeddenator-fs/default"]  # FUSE support from fs component
+fuse = ["embeddenator-fs/fuse"]  # FUSE support from fs component
