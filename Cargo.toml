@@ -21,10 +21,10 @@ path = "src/main.rs"
 
 [dependencies]
 # Component libraries (path for dev, semver for crates.io)
-embeddenator-vsa = { path = "../embeddenator-vsa", version = ">=0.20.1, <1.0.0" }
-embeddenator-retrieval = { path = "../embeddenator-retrieval", version = ">=0.20.0, <1.0.0" }
-embeddenator-fs = { path = "../embeddenator-fs", version = ">=0.22.0, <1.0.0" }
-embeddenator-io = { path = "../embeddenator-io", version = ">=0.20.0, <1.0.0" }
+embeddenator-vsa = { path = "../embeddenator-vsa", version = ">=0.21.0, <1.0.0" }
+embeddenator-retrieval = { path = "../embeddenator-retrieval", version = ">=0.21.0, <1.0.0" }
+embeddenator-fs = { path = "../embeddenator-fs", version = ">=0.23.0, <1.0.0" }
+embeddenator-io = { path = "../embeddenator-io", version = ">=0.21.0, <1.0.0" }
 
 # CLI and error handling
 clap = { version = ">=4.5, <5.0", features = ["derive"] }
