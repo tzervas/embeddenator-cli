@@ -5,7 +5,7 @@ use anyhow::Result;
 #[cfg(feature = "fuse")]
 use embeddenator_fs::embrfs::{EmbrFS, DEFAULT_CHUNK_SIZE};
 #[cfg(feature = "fuse")]
-use embeddenator_fs::fuse_shim::{mount, EngramFS, MountOptions};
+use embeddenator_fs::fuse_shim::{mount_with_signals, EngramFS, MountOptions};
 #[cfg(feature = "fuse")]
 use embeddenator_vsa::ReversibleVSAConfig;
 #[cfg(feature = "fuse")]
@@ -97,11 +97,11 @@ pub fn handle_mount(
         fsname: format!("engram:{}", engram.display()),
     };
 
-    // Mount the filesystem (blocks until unmounted)
+    // Mount the filesystem with signal handling (blocks until unmounted)
+    // Signal handling enables graceful unmount on Ctrl+C or SIGTERM
     println!("EngramFS mounted at {}", mountpoint.display());
-    println!("Use 'fusermount -u {}' to unmount", mountpoint.display());
 
-    mount(fuse_fs, &mountpoint, options)?;
+    mount_with_signals(fuse_fs, &mountpoint, options)?;
 
     if verbose {
         println!("\nUnmounted.");
