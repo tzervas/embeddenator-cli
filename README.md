@@ -2,6 +2,10 @@
 
 Command-line interface for the Embeddenator holographic computing substrate.
 
+**Independent component** extracted from the Embeddenator monolithic repository. Part of the [Embeddenator workspace](https://github.com/tzervas/embeddenator).
+
+**Repository:** [https://github.com/tzervas/embeddenator-cli](https://github.com/tzervas/embeddenator-cli)
+
 ## Overview
 
 This crate provides a modular CLI for Embeddenator operations, extracted from the main embeddenator repository as part of the Phase 2A component decomposition.

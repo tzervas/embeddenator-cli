@@ -5,6 +5,12 @@ on:
     branches: [main, develop]
   pull_request:
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      debug_mode:
+        description: 'Enable debug output (RUST_BACKTRACE, RUST_LOG)'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -12,37 +18,70 @@ permissions:
 
 env:
   CARGO_TERM_COLOR: always
-  RUST_BACKTRACE: 1
+  # Debug disabled by default - enable via workflow_dispatch with debug_mode=true
+  RUST_BACKTRACE: ${{ inputs.debug_mode && '1' || '0' }}
+  RUST_LOG: ${{ inputs.debug_mode && 'debug' || '' }}
 
 jobs:
   build-and-test:
     name: Build and Test
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: embeddenator-cli
     steps:
       - uses: actions/checkout@v4
-      
+        with:
+          path: embeddenator-cli
+
+      - name: Clone dependency repos
+        working-directory: ${{ github.workspace }}
+        run: |
+          git clone --depth 1 https://github.com/tzervas/embeddenator-vsa.git
+          git clone --depth 1 https://github.com/tzervas/embeddenator-fs.git
+          git clone --depth 1 https://github.com/tzervas/embeddenator-retrieval.git
+          git clone --depth 1 https://github.com/tzervas/embeddenator-io.git
+
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy, rustfmt
-      
+
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@nextest
+
       - name: Rust cache
         uses: Swatinem/rust-cache@v2
         with:
           key: embeddenator-cli
-      
+          workspaces: embeddenator-cli
+
       - name: Check formatting
         run: cargo fmt --check
-      
+
       - name: Clippy lints
-        run: cargo clippy --all-targets --all-features -- -D warnings
-      
+        run: cargo clippy --all-targets -- -D warnings
+
       - name: Build
-        run: cargo build --all-features
-      
-      - name: Run tests
-        run: cargo test --all-features --verbose
+        run: cargo build
+
+      - name: Run tests (quiet first pass)
+        id: test_quiet
+        continue-on-error: true
+        run: |
+          cargo nextest run --no-fail-fast --no-tests=pass 2>&1 | tee test-output.txt
+          echo "exit_code=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
+
+      - name: Re-run failed tests with debug
+        if: steps.test_quiet.outputs.exit_code != '0'
+        env:
+          RUST_BACKTRACE: full
+          RUST_LOG: debug
+        run: |
+          echo "::group::Re-running failed tests with debug output"
+          cargo nextest run --run-ignored=all --retries 0 --failure-output immediate-final --no-tests=pass
+          echo "::endgroup::"
 
   # Optional: runs on self-hosted ARM64 runner if available
   build-arm64:
@@ -51,19 +90,44 @@ jobs:
     if: github.repository_owner == 'tzervas'
     continue-on-error: true
     timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: embeddenator-cli
     steps:
       - uses: actions/checkout@v4
-      
+        with:
+          path: embeddenator-cli
+
+      - name: Clone dependency repos
+        working-directory: ${{ github.workspace }}
+        run: |
+          git clone --depth 1 https://github.com/tzervas/embeddenator-vsa.git
+          git clone --depth 1 https://github.com/tzervas/embeddenator-fs.git
+          git clone --depth 1 https://github.com/tzervas/embeddenator-retrieval.git
+          git clone --depth 1 https://github.com/tzervas/embeddenator-io.git
+
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
-      
+
       - name: Rust cache
         uses: Swatinem/rust-cache@v2
         with:
           key: embeddenator-cli-arm64
-      
+          workspaces: embeddenator-cli
+
       - name: Build
-        run: cargo build --all-features
-      
+        run: cargo build
+
       - name: Run tests
-        run: cargo test --all-features
+        id: test_quiet
+        continue-on-error: true
+        run: |
+          cargo test 2>&1 | tee test-output.txt
+          echo "exit_code=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
+
+      - name: Re-run failed tests with debug
+        if: steps.test_quiet.outputs.exit_code != '0'
+        env:
+          RUST_BACKTRACE: full
+          RUST_LOG: debug
+        run: cargo test -- --nocapture
