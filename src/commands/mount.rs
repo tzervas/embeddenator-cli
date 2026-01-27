@@ -5,7 +5,7 @@ use anyhow::Result;
 #[cfg(feature = "fuse")]
 use embeddenator_fs::embrfs::{EmbrFS, DEFAULT_CHUNK_SIZE};
 #[cfg(feature = "fuse")]
-use embeddenator_fs::fuse_shim::{EngramFS, MountOptions, mount};
+use embeddenator_fs::fuse_shim::{mount, EngramFS, MountOptions};
 #[cfg(feature = "fuse")]
 use embeddenator_vsa::ReversibleVSAConfig;
 #[cfg(feature = "fuse")]
@@ -21,10 +21,7 @@ pub fn handle_mount(
     verbose: bool,
 ) -> Result<()> {
     if verbose {
-        println!(
-            "Embeddenator v{} - FUSE Mount",
-            env!("CARGO_PKG_VERSION")
-        );
+        println!("Embeddenator v{} - FUSE Mount", env!("CARGO_PKG_VERSION"));
         println!("============================");
     }
 
@@ -49,11 +46,8 @@ pub fn handle_mount(
             if let Some(chunk_vec) = engram_data.codebook.get(&chunk_id) {
                 // Decode the sparse vector to bytes
                 // IMPORTANT: Use the same path as during encoding for correct shift calculation
-                let decoded = chunk_vec.decode_data(
-                    &config,
-                    Some(&file_entry.path),
-                    DEFAULT_CHUNK_SIZE,
-                );
+                let decoded =
+                    chunk_vec.decode_data(&config, Some(&file_entry.path), DEFAULT_CHUNK_SIZE);
 
                 // Apply correction to guarantee bit-perfect reconstruction
                 let chunk_data = if let Some(corrected) =
@@ -105,10 +99,7 @@ pub fn handle_mount(
 
     // Mount the filesystem (blocks until unmounted)
     println!("EngramFS mounted at {}", mountpoint.display());
-    println!(
-        "Use 'fusermount -u {}' to unmount",
-        mountpoint.display()
-    );
+    println!("Use 'fusermount -u {}' to unmount", mountpoint.display());
 
     mount(fuse_fs, &mountpoint, options)?;
 
