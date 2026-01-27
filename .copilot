@@ -1,0 +1,58 @@
+# Embeddenator CLI - Development Context
+
+## Active Technologies
+- **Rust**: Stable toolchain (edition 2021)
+- **CLI Framework**: clap 4.5 (derive macros for command parsing)
+- **Component Integration**: embeddenator-vsa, embeddenator-retrieval, embeddenator-fs, embeddenator-io
+- **Error Handling**: anyhow for ergonomic error propagation
+- **Optional Features**: FUSE filesystem mounting (requires `fuse` feature flag)
+
+## Project Structure
+```
+embeddenator-cli/
+├── src/
+│   ├── main.rs          # CLI entry point
+│   ├── lib.rs           # Library interface
+│   ├── commands/        # Command implementations (ingest, extract, query, mount, update)
+│   └── utils/           # Shared utilities
+├── Cargo.toml           # v0.20.0-alpha.1 with component dependencies
+└── README.md            # Usage examples and installation instructions
+```
+
+## Commands
+- **Build**: `cargo build --release` (add `--features fuse` for FUSE support)
+- **Test**: `cargo test`
+- **Run**: `cargo run -- [command] [args]`
+- **Check**: `cargo clippy --all-targets --all-features`
+- **Format**: `cargo fmt --all`
+
+## Code Conventions
+- **Modular Commands**: Each command (ingest/extract/query/mount/update) in separate module under `commands/`
+- **Error Propagation**: Use `anyhow::Result<T>` for command return types
+- **Clap Derive**: Use `#[derive(Parser)]` for argument structs
+- **Logging**: Use `tracing` macros for structured logging (info!, debug!, warn!, error!)
+- **Component Boundaries**: CLI orchestrates components but doesn't implement VSA logic directly
+
+## Current Focus
+- **Phase 2A Component Extraction**: CLI extracted from monorepo with clean component dependencies
+- **Command Interface**: Expose all core operations (ingest, extract, query, mount, update, bundle-hier)
+- **FUSE Integration**: Optional filesystem mounting via embeddenator-fs
+- **Incremental Operations**: Support add/remove/modify/compact commands for engram updates
+- **Hierarchical Artifacts**: Bundle-hier command for multi-level engram structures
+
+## Recent Changes
+- Extracted from embeddenator monorepo as standalone CLI crate
+- Updated to depend on component crates (embeddenator-vsa, embeddenator-retrieval, embeddenator-fs, embeddenator-io)
+- Version bumped to 0.20.0-alpha.1
+- Added clap-based command parsing
+- Implemented modular command structure
+
+## Agents
+- Embeddenator Agent (`embeddenator/.github/agents/embeddenator.agent.md`): VSA/engram/Rust integration expert
+- CLI Agent (TBD): Command-line interface design and UX optimization
+
+## Related Documentation
+- [WORKSPACE_TRACKER.md](/WORKSPACE_TRACKER.md): Multi-repo state tracker
+- [SPEC_KIT_INTEGRATION.md](/SPEC_KIT_INTEGRATION.md): Specification-Driven Development (SDD) workflow
+- [embeddenator README](/embeddenator/README.md): Main project overview
+- [ADR-016](https://github.com/tzervas/embeddenator/blob/main/docs/adr/ADR-016-component-decomposition.md): Component decomposition rationale
