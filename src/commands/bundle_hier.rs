@@ -24,12 +24,8 @@ pub fn handle_bundle_hier(
         println!("=============================================");
     }
 
-    let engram_data = EmbrFS::load_engram(&engram)?;
-    let manifest_data = EmbrFS::load_manifest(&manifest)?;
-
-    let mut fs = EmbrFS::new();
-    fs.engram = engram_data;
-    fs.manifest = manifest_data;
+    // Load existing engram and manifest (auto-detects holographic mode)
+    let fs = EmbrFS::load(&engram, &manifest)?;
 
     let config = ReversibleVSAConfig::default();
     let mut hierarchical = fs.bundle_hierarchically_with_options(

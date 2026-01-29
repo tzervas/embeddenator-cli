@@ -35,16 +35,8 @@ pub fn handle_update_add(
         anyhow::bail!("Input file not found: {}", file.display());
     }
 
-    // Load existing engram and manifest
-    let engram_data = EmbrFS::load_engram(&engram)?;
-    let manifest_data = EmbrFS::load_manifest(&manifest)?;
-
-    // Create EmbrFS with loaded data
-    let mut fs = EmbrFS {
-        engram: engram_data,
-        manifest: manifest_data,
-        resonator: None,
-    };
+    // Load existing engram and manifest (auto-detects holographic mode)
+    let mut fs = EmbrFS::load(&engram, &manifest)?;
     let config = ReversibleVSAConfig::default();
 
     // Determine logical path
@@ -101,16 +93,8 @@ pub fn handle_update_remove(
         anyhow::bail!("Manifest file not found: {}", manifest.display());
     }
 
-    // Load existing engram and manifest
-    let engram_data = EmbrFS::load_engram(&engram)?;
-    let manifest_data = EmbrFS::load_manifest(&manifest)?;
-
-    // Create EmbrFS with loaded data
-    let mut fs = EmbrFS {
-        engram: engram_data,
-        manifest: manifest_data,
-        resonator: None,
-    };
+    // Load existing engram and manifest (auto-detects holographic mode)
+    let mut fs = EmbrFS::load(&engram, &manifest)?;
 
     if verbose {
         println!("Removing file: {}", path);
@@ -158,16 +142,8 @@ pub fn handle_update_modify(
         anyhow::bail!("Input file not found: {}", file.display());
     }
 
-    // Load existing engram and manifest
-    let engram_data = EmbrFS::load_engram(&engram)?;
-    let manifest_data = EmbrFS::load_manifest(&manifest)?;
-
-    // Create EmbrFS with loaded data
-    let mut fs = EmbrFS {
-        engram: engram_data,
-        manifest: manifest_data,
-        resonator: None,
-    };
+    // Load existing engram and manifest (auto-detects holographic mode)
+    let mut fs = EmbrFS::load(&engram, &manifest)?;
     let config = ReversibleVSAConfig::default();
 
     // Determine logical path
@@ -216,12 +192,11 @@ pub fn handle_update_compact(engram: PathBuf, manifest: PathBuf, verbose: bool) 
         anyhow::bail!("Manifest file not found: {}", manifest.display());
     }
 
-    // Load existing engram and manifest
-    let engram_data = EmbrFS::load_engram(&engram)?;
-    let manifest_data = EmbrFS::load_manifest(&manifest)?;
+    // Load existing engram and manifest (auto-detects holographic mode)
+    let mut fs = EmbrFS::load(&engram, &manifest)?;
 
     // Count deleted files before compact
-    let deleted_count = manifest_data.files.iter().filter(|f| f.deleted).count();
+    let deleted_count = fs.manifest.files.iter().filter(|f| f.deleted).count();
 
     if deleted_count == 0 {
         if verbose {
@@ -230,12 +205,6 @@ pub fn handle_update_compact(engram: PathBuf, manifest: PathBuf, verbose: bool) 
         return Ok(());
     }
 
-    // Create EmbrFS with loaded data
-    let mut fs = EmbrFS {
-        engram: engram_data,
-        manifest: manifest_data,
-        resonator: None,
-    };
     let config = ReversibleVSAConfig::default();
 
     if verbose {

@@ -16,8 +16,8 @@ fn setup_test_engram() -> (TempDir, std::path::PathBuf, std::path::PathBuf) {
     fs::write(input_dir.join("file1.txt"), b"Hello, World!").unwrap();
     fs::write(input_dir.join("file2.txt"), b"Test content for file 2").unwrap();
 
-    // Ingest the files
-    let mut embrfs = EmbrFS::new();
+    // Ingest the files (use holographic mode for better storage efficiency)
+    let mut embrfs = EmbrFS::new_holographic();
     let config = ReversibleVSAConfig::default();
     embrfs.ingest_directory(&input_dir, false, &config).unwrap();
 

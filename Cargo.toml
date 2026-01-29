@@ -1,6 +1,6 @@
 [package]
 name = "embeddenator-cli"
-version = "0.21.0"
+version = "0.22.0"
 edition = "2021"
 authors = ["Tyler Zervas <tz-dev@vectorweight.com>"]
 description = "CLI interface for Embeddenator holographic computing substrate"
