@@ -1,5 +1,10 @@
 # embeddenator-cli
 
+<!-- FLEET-BADGES:BEGIN -->
+[![CI](https://github.com/tzervas/embeddenator-cli/actions/workflows/fleet-ci.yml/badge.svg?branch=main)](https://github.com/tzervas/embeddenator-cli/actions/workflows/fleet-ci.yml?query=branch%3Amain)
+[![Security](https://github.com/tzervas/embeddenator-cli/actions/workflows/fleet-security.yml/badge.svg?branch=main)](https://github.com/tzervas/embeddenator-cli/actions/workflows/fleet-security.yml?query=branch%3Amain)
+<!-- FLEET-BADGES:END -->
+
 Command-line interface for the Embeddenator holographic computing substrate.
 
 **Independent component** extracted from the Embeddenator monolithic repository. Part of the [Embeddenator workspace](https://github.com/tzervas/embeddenator).
