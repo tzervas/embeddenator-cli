@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- Gated against `embeddenator-vsa` wrap of `trit-vsa` 0.3. Holographic `SparseVec::bind` is unchanged (trit multiplication: `P*P=P`, self-inverse unbind-by-rebind); not trit-vsa subtraction-mod-3 (`P.bind(P)=Z`). No direct `trit-vsa` dependency; default features only (no `fuse`).
+
 ## [0.21.0] - 2026-01-27
 
 ### Changed
