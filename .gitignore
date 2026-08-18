@@ -2,7 +2,7 @@
 /target/
 **/*.rs.bk
 *.pdb
-Cargo.lock
+# Binary crate: commit Cargo.lock so the transitive trit-vsa 0.3 pin is reviewable.
 
 # IDE
 .idea/
